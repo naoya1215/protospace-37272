@@ -1,6 +1,6 @@
 class PrototypesController < ApplicationController
-
-  before_action :authenticate_user!, only: [:new, :edit, :destroy]
+  # exceptを使用(index, showは除きユーザーがログインしているかを確認する)
+  before_action :authenticate_user!, except: [:index, :show]
 
   def index
     @prototype = Prototype.all
@@ -11,7 +11,8 @@ class PrototypesController < ApplicationController
   end
   
   def create
-    if @prototype = Prototype.create(prototype_params) 
+    @prototype = Prototype.new(prototype_params)
+    if @prototype.save
       redirect_to root_path
     else
       render :new
